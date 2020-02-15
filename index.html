@@ -27,9 +27,13 @@
             <textarea id="input" class="mdui-textfield-input" rows="8" placeholder="输入你要转换的内容"></textarea>
         </div>
         <div class="mdui-row">
-            <div class="mdui-col-xs-9">
+            <div class="mdui-col-xs-6">
                 <button id="gogogo" class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
                     style="color:#fff!important;">转换</button>
+            </div>
+            <div class="mdui-col-xs-3">
+                <button id="copy" data-clipboard-target="#output" class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                    style="color:#fff!important;">复制</button>
             </div>
             <div class="mdui-col-xs-3">
                 <button id="clear" class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
@@ -46,6 +50,11 @@
         反向&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <label class="mdui-switch">
             <input id="reverse" type="checkbox" />
+            <i class="mdui-switch-icon"></i>
+        </label>&nbsp;&nbsp;&nbsp;
+        自动选择频率最高多音字&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label class="mdui-switch">
+            <input id="auto-choice" type="checkbox" />
             <i class="mdui-switch-icon"></i>
         </label>
     </div>

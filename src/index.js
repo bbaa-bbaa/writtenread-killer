@@ -2,6 +2,14 @@ const mdui = require("mdui");
 import 'mdui/dist/css/mdui.min.css';
 window.$$ = mdui.JQ;
 import Worker from './main.worker.js';
+import Clipboard from 'clipboard';
+const Copy = new Clipboard('#copy');
+Copy.on('success', function(e) {
+    mdui.snackbar({message:"复制成功",buttonText:"好的"})
+});
+Copy.on('error', function(e) {
+    mdui.snackbar({message:"复制失败",buttonText:"好的"})
+});
 let worker = new Worker();
 let text=[];
 let str="";
@@ -50,6 +58,10 @@ function genRadio(list){
 worker.addEventListener("message",(e)=>{
     switch (e.data.method) {
         case "choicePinyin":
+            if($$("#auto-choice").prop("checked")) {
+                worker.postMessage({method:"pinyin",pinyin:e.data.list[0]});
+                break;
+            }
             if(dialogCloseId !== null) clearTimeout(dialogCloseId);
             $$("#text").html(str.substr(0,e.data.index)+"<span style=\"color:red;\">"+str.substr(e.data.index,1)+"</span>"+str.substr(e.data.index+1))
             genRadio(e.data.list);

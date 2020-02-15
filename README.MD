@@ -3,4 +3,4 @@
 
 [拼音来源](https://github.com/mozillazg/pinyin-data)
 
-[字频来源](http://lingua.mtsu.edu/chinese-computing/statistics/)
+[字频来源](http://lingua.mtsu.edu/chinese-computing/statistics/)np
