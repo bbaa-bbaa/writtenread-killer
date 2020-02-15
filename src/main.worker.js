@@ -1,6 +1,6 @@
 const pinyin = require("./assets/pinyin.json");;
 const rpinyin = {};
-const frequence = require("./assets/frequence.json").filter(a => /[\u4e00-\u9fa5]/.test(a));
+const frequence = require("./assets/frequence.json");
 let text = [];
 let result = [];
 let index = 0;
