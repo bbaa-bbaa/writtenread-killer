@@ -1,4 +1,4 @@
-const pinyin = require("./assets/pinyin.json");;
+const pinyin = require("./assets/pinyin.json");
 const rpinyin = {};
 const frequence = require("./assets/frequence.json");
 let text = [];
