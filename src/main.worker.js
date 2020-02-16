@@ -8,7 +8,7 @@ let usedhans = 0.3;
 let reverse = false;
 for (const [k, v] of Object.entries(pinyin)) {
     if (/,/.test(v)) {
-        let py=v.split(",")[0]
+        let py = v.split(",")[0]
         if (!(py in rpinyin)) {
             rpinyin[py] = []
         }
@@ -31,12 +31,12 @@ function transformOnce() {
     let py = null;
     try {
         py = getPinyin(index);
-        if(!py) throw Error("没有拼音")
+        if (!py) throw Error("没有拼音")
     } catch (e) {
         return text[index][0];
     }
     if (/,/.test(py)) {
-        postMessage({ method: "choicePinyin", list: py.split(",") ,index});
+        postMessage({ method: "choicePinyin", list: py.split(","), index });
         return "ChoicePinYin";
     } else {
         let samepy = rpinyin[py];
@@ -47,10 +47,10 @@ function transformOnce() {
         return samepya[Math.floor(Math.random() * samepya.length * usedhans)][1];
     }
 }
-function transform(){
-    while(index<text.length){
-        let r=transformOnce();
-        if(r==="ChoicePinYin"){
+function transform() {
+    while (index < text.length) {
+        let r = transformOnce();
+        if (r === "ChoicePinYin") {
             break;
         }
         result.push(r);
@@ -67,16 +67,16 @@ addEventListener("message", (e) => {
             text = e.data.text;
             usedhans = e.data.usedhans;
             reverse = e.data.reverse;
-            var r=transform();
-            if(index==text.length) {
-                postMessage({method:"result",result:r,text});
+            var r = transform();
+            if (index == text.length) {
+                postMessage({ method: "result", result: r, text });
             }
             break;
         case "pinyin":
-            text[index][1]=e.data.pinyin;
-            var r=transform();
-            if(index==text.length) {
-                postMessage({method:"result",result:r,text});
+            text[index][1] = e.data.pinyin;
+            var r = transform();
+            if (index == text.length) {
+                postMessage({ method: "result", result: r, text });
             }
             break;
     }
