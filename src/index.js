@@ -4,78 +4,86 @@ const $$ = mdui.JQ;
 import Worker from './main.worker.js';
 import Clipboard from 'clipboard';
 const Copy = new Clipboard('#copy');
-Copy.on('success', function(e) {
-    mdui.snackbar({message:"复制成功",buttonText:"好的"})
+Copy.on('success', function (e) {
+    mdui.snackbar({ message: "复制成功", buttonText: "好的" })
 });
-Copy.on('error', function(e) {
-    mdui.snackbar({message:"复制失败",buttonText:"好的"})
+Copy.on('error', function (e) {
+    mdui.snackbar({ message: "复制失败", buttonText: "好的" })
 });
 let worker = new Worker();
-let text=[];
-let str="";
-let dialogCloseId=null;
+let text = [];
+let str = "";
+let dialogCloseId = null;
 let dialog = new mdui.Dialog(".mdui-dialog", {
-    history:false,
-    modal:true,
-    closeOnEsc:false,
-    closeOnConfirm:false
+    history: false,
+    modal: true,
+    closeOnEsc: false,
+    closeOnConfirm: false
 });
-if(localStorage.getItem("data")){
-    let data=JSON.parse(localStorage.getItem("data"));
+if (localStorage.getItem("data")) {
+    let data = JSON.parse(localStorage.getItem("data"));
     $$("#usedhans").val(data.usedhans);
-    $$("#reverse").prop("checked",data.reverse);
+    $$("#reverse").prop("checked", data.reverse);
     $$("#input").val(data.text.map(a => a[0]).join(''))
     $$("#output").val(data.result)
-    text=data.text;
+    text = data.text;
 }
-$$(".mdui-dialog").on("confirm.mdui.dialog",(e)=>{
-    worker.postMessage({method:"pinyin",pinyin:$$("input[name='pinyin']:checked").val()});
-    dialogCloseId=setTimeout(()=>{
+$$(".mdui-dialog").on("confirm.mdui.dialog", (e) => {
+    worker.postMessage({ method: "pinyin", pinyin: $$("input[name='pinyin']:checked").val() });
+    dialogCloseId = setTimeout(() => {
         dialog.close();
-    },350);
+    }, 350);
 })
-function genRadio(list){
+function genRadio(list) {
     $$("#radio").html("");
-    let id=0;
-    for (let value of Object.values(list)){
+    let id = 0;
+    let row = "";
+    for (let value of Object.values(list)) {
+        if(id % 4 == 0){
+            row = document.createElement("div");
+            row.classList.add("mdui-row");
+            $$("#radio").append(row);
+        }
+        let container=document.createElement("div");
+        container.classList.add("mdui-col-xs-3")
         let label = document.createElement("label");
         label.classList.add("mdui-radio");
-        let radio =document.createElement("input");
-        radio.setAttribute("type","radio");
-        radio.setAttribute("name","pinyin");
-        radio.setAttribute("value",value);
-        if(!id) {radio.checked=true;}
-        let i=document.createElement("i");
-        i.setAttribute("class","mdui-radio-icon");
+        let radio = document.createElement("input");
+        radio.setAttribute("type", "radio");
+        radio.setAttribute("name", "pinyin");
+        radio.setAttribute("value", value);
+        if (!id) { radio.checked = true; }
+        let i = document.createElement("i");
+        i.setAttribute("class", "mdui-radio-icon");
         label.append(radio);
         label.append(i)
         label.append(value)
-        $$("#radio").append(label);
-        $$("#radio").append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
+        container.append(label);
+        row.append(container)
         id++;
     }
 }
-worker.addEventListener("message",(e)=>{
+worker.addEventListener("message", (e) => {
     switch (e.data.method) {
         case "choicePinyin":
-            if($$("#auto-choice").prop("checked")) {
-                worker.postMessage({method:"pinyin",pinyin:e.data.list[0]});
+            if ($$("#auto-choice").prop("checked")) {
+                worker.postMessage({ method: "pinyin", pinyin: e.data.list[0] });
                 break;
             }
-            if(dialogCloseId !== null) clearTimeout(dialogCloseId);
-            $$("#text").html(str.substr(0,e.data.index)+"<span style=\"color:red;\">"+str.substr(e.data.index,1)+"</span>"+str.substr(e.data.index+1))
+            if (dialogCloseId !== null) clearTimeout(dialogCloseId);
+            $$("#text").html(str.substr(0, e.data.index) + "<span style=\"color:red;\">" + str.substr(e.data.index, 1) + "</span>" + str.substr(e.data.index + 1))
             genRadio(e.data.list);
             dialog.open();
             break;
         case "result":
-            localStorage.setItem("data",JSON.stringify({
-                usedhans:Number($$("#usedhans").val()),
-                result:e.data.result,
-                reverse:$$("#reverse").prop("checked"),
-                text:e.data.text
+            localStorage.setItem("data", JSON.stringify({
+                usedhans: Number($$("#usedhans").val()),
+                result: e.data.result,
+                reverse: $$("#reverse").prop("checked"),
+                text: e.data.text
             }))
             $$("#output").val(e.data.result);
-            text=e.data.text;
+            text = e.data.text;
     }
 })
 $$("#clear").on("click", () => {
@@ -84,15 +92,15 @@ $$("#clear").on("click", () => {
 });
 $$("#gogogo").on("click", () => {
     str = $$("#input").val();
-    if(str.length!=text.length) {
-        worker.postMessage({method:"transform",text:[...str].map(value=>[value]),usedhans:(Number($$("#usedhans").val()) / 100),reverse:$$("#reverse").prop("checked")});
-    } else if(str.length!=0) {
-        if(text.every(((v,i) => {
+    if (str.length != text.length) {
+        worker.postMessage({ method: "transform", text: [...str].map(value => [value]), usedhans: (Number($$("#usedhans").val()) / 100), reverse: $$("#reverse").prop("checked") });
+    } else if (str.length != 0) {
+        if (text.every(((v, i) => {
             return v[0] == str[i];
-        }))){
-            worker.postMessage({method:"transform",text:text,usedhans:(Number($$("#usedhans").val()) / 100),reverse:$$("#reverse").prop("checked")});
+        }))) {
+            worker.postMessage({ method: "transform", text: text, usedhans: (Number($$("#usedhans").val()) / 100), reverse: $$("#reverse").prop("checked") });
         } else {
-            worker.postMessage({method:"transform",text:[...str].map(value=>[value]),usedhans:(Number($$("#usedhans").val()) / 100),reverse:$$("#reverse").prop("checked")});
+            worker.postMessage({ method: "transform", text: [...str].map(value => [value]), usedhans: (Number($$("#usedhans").val()) / 100), reverse: $$("#reverse").prop("checked") });
         }
     }
 })
