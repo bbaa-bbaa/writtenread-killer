@@ -62,6 +62,7 @@ function genRadio(list) {
         row.append(container);
         id++;
     }
+    dialog.handleUpdate();
 }
 worker.addEventListener("message", (e) => {
     switch (e.data.method) {
