@@ -39,12 +39,12 @@ function genRadio(list) {
     let id = 0;
     let row = "";
     for (let value of Object.values(list)) {
-        if(id % 4 == 0){
+        if (id % 4 == 0) {
             row = document.createElement("div");
             row.classList.add("mdui-row");
             $$("#radio").append(row);
         }
-        let container=document.createElement("div");
+        let container = document.createElement("div");
         container.classList.add("mdui-col-xs-3")
         let label = document.createElement("label");
         label.classList.add("mdui-radio");
@@ -59,7 +59,7 @@ function genRadio(list) {
         label.append(i)
         label.append(value)
         container.append(label);
-        row.append(container)
+        row.append(container);
         id++;
     }
 }
