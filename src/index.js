@@ -1,6 +1,6 @@
 const mdui = require("mdui");
 import 'mdui/dist/css/mdui.min.css';
-window.$$ = mdui.JQ;
+const $$ = mdui.JQ;
 import Worker from './main.worker.js';
 import Clipboard from 'clipboard';
 const Copy = new Clipboard('#copy');
