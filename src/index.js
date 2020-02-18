@@ -26,6 +26,7 @@ if (localStorage.getItem("data")) {
     $$("#reverse").prop("checked", data.reverse);
     $$("#input").val(data.text.map(a => a[0]).join(''))
     $$("#output").val(data.result)
+    $$("#auto-choice").prop("checked",data.auto)
     text = data.text;
 }
 $$(".mdui-dialog").on("confirm.mdui.dialog", (e) => {
@@ -81,7 +82,8 @@ worker.addEventListener("message", (e) => {
                 usedhans: Number($$("#usedhans").val()),
                 result: e.data.result,
                 reverse: $$("#reverse").prop("checked"),
-                text: e.data.text
+                text: e.data.text,
+                auto:$$("#auto-choice").prop("checked")
             }))
             $$("#gogogo").prop("disabled",false);
             $$("#p").css("width","100%");
