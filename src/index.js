@@ -83,8 +83,13 @@ worker.addEventListener("message", (e) => {
                 reverse: $$("#reverse").prop("checked"),
                 text: e.data.text
             }))
+            $$("#gogogo").prop("disabled",false);
+            $$("#p").css("width","100%");
             $$("#output").val(e.data.result);
             text = e.data.text;
+        case "p":
+            $$("#p").css("width",e.data.p*100+"%");
+            break;
     }
 })
 $$("#clear").on("click", () => {
@@ -92,7 +97,10 @@ $$("#clear").on("click", () => {
     $$("#output").val("");
 });
 $$("#gogogo").on("click", () => {
+    if($$("#gogogo").prop("disabled")) return;
+    $$("#gogogo").prop("disabled",true)
     str = $$("#input").val();
+    $$("#p").css("width","0%");
     if (str.length != text.length) {
         worker.postMessage({ method: "transform", text: [...str].map(value => [value]), usedhans: (Number($$("#usedhans").val()) / 100), reverse: $$("#reverse").prop("checked") });
     } else if (str.length != 0) {

@@ -6,6 +6,7 @@ let result = [];
 let index = 0;
 let usedhans = 0.3;
 let reverse = false;
+let length = 0;
 for (const [k, v] of Object.entries(pinyin)) {
     if (/,/.test(v)) {
         let py = v.split(",")[0]
@@ -48,13 +49,16 @@ function transformOnce() {
     }
 }
 function transform() {
-    while (index < text.length) {
+    while (index < length) {
         let r = transformOnce();
         if (r === "ChoicePinYin") {
             break;
         }
         result.push(r);
         index++;
+        if (index % 10 == 0) {
+            postMessage({ method: "p", p: index / length });
+        }
     }
     return result.join('');
 }
@@ -67,15 +71,16 @@ addEventListener("message", (e) => {
             text = e.data.text;
             usedhans = e.data.usedhans;
             reverse = e.data.reverse;
+            length = text.length;
             var r = transform();
-            if (index == text.length) {
+            if (index == length) {
                 postMessage({ method: "result", result: r, text });
             }
             break;
         case "pinyin":
             text[index][1] = e.data.pinyin;
             var r = transform();
-            if (index == text.length) {
+            if (index == length) {
                 postMessage({ method: "result", result: r, text });
             }
             break;
