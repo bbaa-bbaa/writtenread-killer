@@ -24,9 +24,9 @@ if (localStorage.getItem("data")) {
     let data = JSON.parse(localStorage.getItem("data"));
     $$("#usedhans").val(data.usedhans);
     $$("#reverse").prop("checked", data.reverse);
-    $$("#input").val(data.text.map(a => a[0]).join(''))
-    $$("#output").val(data.result)
-    $$("#auto-choice").prop("checked",data.auto)
+    $$("#input").val(data.text.map(a => a[0]).join(''));
+    $$("#output").val(data.result);
+    $$("#auto-choice").prop("checked",data.auto);
     text = data.text;
 }
 $$(".mdui-dialog").on("confirm.mdui.dialog", (e) => {
