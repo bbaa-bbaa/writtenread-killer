@@ -9,7 +9,6 @@ on:
 
 jobs:
   Deploy-Pages: 
-    name: Deploy Hexo Public To Pages
     runs-on: ubuntu-latest 
 
     steps:
