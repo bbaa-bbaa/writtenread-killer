@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>会读->不会读</title>
+    <style>
+        body {
+            background-color: #fafafa;
+        }
+
+        textarea {
+            cursor: text !important;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body class="mdui-theme-primary-cyan mdui-theme-accent-light-blue">
+    <div class="mdui-container" style="margin-top:60px;margin-left: auto;margin-right: auto;">
+        <div class="mdui-textfield">
+            <textarea id="input" class="mdui-textfield-input" rows="8" placeholder="输入你要转换的内容"></textarea>
+        </div>
+        <div class="mdui-row">
+            <div class="mdui-col-md-3 mdui-col-xs-4">
+                <button id="copy" data-clipboard-target="#output"
+                    class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                    style="border: 1px #40c4ff solid;">复制</button>
+            </div>
+            <div class="mdui-col-md-6 mdui-col-xs-4">
+                <button id="gogogo" class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                    style="background-color: transparent!important;border: 1px #40c4ff solid;">
+                    <span style="display:block;">转换</span>
+                    <span id="p"
+                        style="position:absolute;left:0;top:0;z-index:-1;background-color: #40c4ff!important;height: 100%;width: 100%;display: inline-block;"></span>
+                </button>
+            </div>
+            <div class="mdui-col-md-3 mdui-col-xs-4">
+                <button id="clear" class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                    style="border: 1px #40c4ff solid;">清空</button>
+            </div>
+        </div>
+        <div class="mdui-textfield">
+            <textarea id="output" class="mdui-textfield-input" rows="8" placeholder="输出结果"></textarea>
+        </div>
+        生成文字占汉字总数的比例（<span id="tip">从汉字使用频率低向高取</span>）
+        <label class="mdui-slider mdui-slider-discrete">
+            <input id="usedhans" type="range" step="0.1" value="30" min="0" max="100" />
+        </label>
+        反向&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label class="mdui-switch">
+            <input id="reverse" type="checkbox" />
+            <i class="mdui-switch-icon"></i>
+        </label>&nbsp;&nbsp;&nbsp;
+        自动选择频率最高多音字&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label class="mdui-switch">
+            <input id="auto-choice" type="checkbox" />
+            <i class="mdui-switch-icon"></i>
+        </label>
+    </div>
+    <div class="mdui-dialog">
+        <div class="mdui-dialog-content">
+            <div class="mdui-dialog-title">选择红字的读音</div>
+            <div id="text"></div>
+            <div id="radio">
+            </div>
+        </div>
+        <div class="mdui-dialog-actions">
+            <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>确认</button>
+        </div>
+    </div>
+<script type="text/javascript" src="bundle.js"></script></body>
+
+</html>
