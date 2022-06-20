@@ -34,6 +34,7 @@ jobs:
 
     - name: Generate public files
       run: |
+        export NODE_OPTIONS=--openssl-legacy-provider
         yarn webpack
 
     - name: Deploy To Github Pages 
