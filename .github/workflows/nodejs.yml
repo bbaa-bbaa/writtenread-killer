@@ -15,13 +15,13 @@ jobs:
     # check it to your workflow can access it
     # from: https://github.com/actions/checkout
     - name: Checkout Repository master branch
-      uses: actions/checkout@master 
+      uses: actions/checkout@v3
 
     # from: https://github.com/actions/setup-node  
     - name: Setup Node.js 10.x 
-      uses: actions/setup-node@master
+      uses: actions/setup-node@v3
       with:
-        node-version: "10.x"
+        node-version: "18"
 
     - name: Setup Git Infomation
       run: | 
@@ -30,16 +30,16 @@ jobs:
 
     - name: Setup Dependencies
       run: |
-        npm install
+        yarn
 
     - name: Generate public files
       run: |
-        npx webpack
+        yarn webpack
 
     - name: Deploy To Github Pages 
       env:
         Github_Pages: github.com/bbaa-bbaa/writtenread-killer.git
         Github_Token: ${{ secrets.token_GithubAPI }}
       run: |  
-        npx gh-pages -d dist -m "Auto deploy" -r "https://${Github_Token}@${Github_Pages}" -f
+        yarn gh-pages -d dist -m "Auto deploy" -r "https://${Github_Token}@${Github_Pages}" -f
 
