@@ -18,10 +18,10 @@ jobs:
       uses: actions/checkout@v3
 
     # from: https://github.com/actions/setup-node  
-    - name: Setup Node.js 10.x 
+    - name: Setup Node.js 18.3 
       uses: actions/setup-node@v3
       with:
-        node-version: "18"
+        node-version: "18.3"
 
     - name: Setup Git Infomation
       run: | 
