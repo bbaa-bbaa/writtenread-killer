@@ -13,6 +13,7 @@ Copy.on('error', function (e) {
 let worker = new Worker();
 let text = [];
 let str = "";
+let splitStr=[];
 let dialogCloseId = null;
 let dialog = new mdui.Dialog(".mdui-dialog", {
     history: false,
@@ -73,7 +74,7 @@ worker.addEventListener("message", (e) => {
                 break;
             }
             if (dialogCloseId !== null) clearTimeout(dialogCloseId);
-            $$("#text").html(str.substr(0, e.data.index) + "<span style=\"color:red;\">" + str.substr(e.data.index, 1) + "</span>" + str.substr(e.data.index + 1))
+            $$("#text").html(splitStr.slice(0,e.data.index).join("") + "<span style=\"color:red;\">" + splitStr[e.data.index] + "</span>" + splitStr.slice(e.data.index + 1).join(""))
             genRadio(e.data.list);
             dialog.open();
             break;
@@ -102,16 +103,17 @@ $$("#gogogo").on("click", () => {
     if($$("#gogogo").prop("disabled")) return;
     $$("#gogogo").prop("disabled",true)
     str = $$("#input").val();
+    splitStr=[...str];
     $$("#p").css("width","0%");
     if (str.length != text.length) {
-        worker.postMessage({ method: "transform", text: [...str].map(value => [value]), usedhans: (Number($$("#usedhans").val()) / 100), reverse: $$("#reverse").prop("checked") });
+        worker.postMessage({ method: "transform", text: splitStr.map(value => [value]), usedhans: (Number($$("#usedhans").val()) / 100), reverse: $$("#reverse").prop("checked") });
     } else if (str.length != 0) {
         if (text.every(((v, i) => {
-            return v[0] == str[i];
+            return v[0] == splitStr[i];
         }))) {
             worker.postMessage({ method: "transform", text: text, usedhans: (Number($$("#usedhans").val()) / 100), reverse: $$("#reverse").prop("checked") });
         } else {
-            worker.postMessage({ method: "transform", text: [...str].map(value => [value]), usedhans: (Number($$("#usedhans").val()) / 100), reverse: $$("#reverse").prop("checked") });
+            worker.postMessage({ method: "transform", text: splitStr.map(value => [value]), usedhans: (Number($$("#usedhans").val()) / 100), reverse: $$("#reverse").prop("checked") });
         }
     }
 })
